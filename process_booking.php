@@ -71,7 +71,7 @@ if ($end < $start) {
 
 // Calculate total price
 $interval = $start->diff($end);
-$total_days = $interval->days + 1;
+$total_days = $interval->days + 1; // +1 to include both pickup and return days
 $total_price = $total_days * $car['price_per_day'];
 
 try {
@@ -99,7 +99,7 @@ try {
     
     $result = $stmt->get_result();
     if (!$result) {
-        throw new Exception("Failed to get result: " . $stmt->error);
+        throw new Exception("Failed to get car details");
     }
     
     $car = $result->fetch_assoc();
@@ -141,59 +141,56 @@ try {
     }
 
     // Insert booking
-    $query = "INSERT INTO bookings (user_id, car_id, start_date, end_date, total_price, pickup_location) 
-             VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare("INSERT INTO bookings (user_id, car_id, start_date, end_date, total_price, status, pickup_location) 
+                           VALUES (?, ?, ?, ?, ?, 'pending', ?)");
     
-    $stmt = $conn->prepare($query);
     if (!$stmt) {
-        throw new Exception("Failed to prepare query: " . $conn->error);
+        throw new Exception("Failed to prepare booking query: " . $conn->error);
     }
     
-    if (!$stmt->bind_param('iissss', $user_id, $car_id, $pickup_date, $return_date, $total_price, $pickup_location)) {
-        throw new Exception("Failed to bind parameters: " . $stmt->error);
+    if (!$stmt->bind_param("iisds", $user_id, $car_id, $pickup_date, $return_date, $total_price, $pickup_location)) {
+        throw new Exception("Failed to bind booking parameters: " . $stmt->error);
     }
     
     if (!$stmt->execute()) {
-        throw new Exception("Failed to execute query: " . $stmt->error);
+        throw new Exception("Failed to create booking: " . $stmt->error);
     }
     
     $booking_id = $conn->insert_id;
-
-
-    if (!$booking_id) {
-        throw new Exception("Failed to get booking ID");
-    }
-
-    // Commit transaction
-    $conn->commit();
     
-    // Send booking confirmation email
+    // Commit transaction
+    mysqli_commit($conn);
+    
+    // Send confirmation email
     $to = $_SESSION['email'];
-    $subject = 'Car Booking Confirmation';
-    $message = "Thank you for booking with us!\n\n".
-              "Booking Details:\n".
-              "Car: {$car['make']} {$car['model']}\n".
-              "Pickup Date: {$pickup_date}\n".
-              "Return Date: {$return_date}\n".
-              "Total Price: $".number_format($total_price, 2)."\n\n".
-              "Booking ID: {$booking_id}\n\n".
-              "Thank you for choosing our services!";
+    $subject = "Booking Confirmation - RCar";
+    $message = "Dear " . $_SESSION['name'] . ",\n\n";
+    $message .= "Your booking has been confirmed!\n\n";
+    $message .= "Booking Details:\n";
+    $message .= "Car: " . $car['title'] . "\n";
+    $message .= "Pickup Date: " . date('F j, Y', strtotime($pickup_date)) . "\n";
+    $message .= "Return Date: " . date('F j, Y', strtotime($return_date)) . "\n";
+    $message .= "Total Price: $" . number_format($total_price, 2) . "\n\n";
+    $message .= "Booking ID: " . $booking_id . "\n\n";
+    $message .= "Thank you for choosing RCar!";
     
     mail($to, $subject, $message);
     
     echo json_encode([
         'success' => true,
-        'message' => 'Booking successful!',
-        'booking_id' => $booking_id
+        'message' => 'Booking created successfully',
+        'booking_id' => $booking_id,
+        'total_price' => $total_price
     ]);
-
+    
 } catch (Exception $e) {
     // Rollback transaction on error
-    $conn->rollback();
+    mysqli_rollback($conn);
+    
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'An error occurred: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }
 

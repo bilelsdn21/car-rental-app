@@ -1,37 +1,24 @@
 <?php
-require_once 'session_init.php';
-require_once 'config.php';
+require_once 'includes/session_manager.php';
+require_once 'includes/helpers.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+requireLogin();
+$user_id = getUserID();
 
-$user_id = $_SESSION['user_id'];
+$csrf_token = generateCSRFToken();
 $tab = isset($_GET['tab']) ? $_GET['tab'] : 'profile';
 
-// Generate CSRF token if not exists
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
 // Fetch user's bookings
-$stmt = $conn->prepare("
+$bookings = $conn->query("
     SELECT b.*, c.make, c.model, c.year, c.image, c.price_per_day, c.pickup_location 
     FROM bookings b 
     JOIN cars c ON b.car_id = c.id 
-    WHERE b.user_id = ? 
+    WHERE b.user_id = $user_id 
     ORDER BY b.created_at DESC
-");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$bookings = $stmt->get_result();
+")->fetch_all(MYSQLI_ASSOC);
 
 // Fetch user details
-$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
+$user = getUserDetails($user_id);
 ?>
 
 <!DOCTYPE html>
@@ -166,7 +153,7 @@ $user = $stmt->get_result()->fetch_assoc();
                 <li><a href="contact.php">Contact</a></li>
             </ul>
             <div class="nav__btn">
-                <?php include 'check_login.php'; ?>
+                <?php if (isLoggedIn()): ?>
                 <?php if (isLoggedIn()): ?>
                     <div class="user-menu">
                         <div class="user-icon">
@@ -406,4 +393,19 @@ $user = $stmt->get_result()->fetch_assoc();
     }
     </script>
 </body>
-</html>
+</html>// Fetch user's bookings
+$bookings_query = $conn->prepare("
+    SELECT b.*, c.make, c.model, c.year, c.image, c.price_per_day, c.pickup_location 
+    FROM bookings b 
+    JOIN cars c ON b.car_id = c.id 
+    WHERE b.user_id = ? 
+    ORDER BY b.created_at DESC
+");
+
+if (!$bookings_query) {
+    die("Database error: " . $conn->error);
+}
+
+$bookings_query->bind_param("i", $user_id);
+$bookings_query->execute();
+$bookings = $bookings_query->get_result()->fetch_all(MYSQLI_ASSOC);<?php if ($bookings->num_rows > 0): ?><?php if (!empty($bookings)): ?>

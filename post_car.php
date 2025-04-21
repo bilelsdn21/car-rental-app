@@ -28,60 +28,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($title) || empty($make) || empty($model) || empty($year) || 
         empty($price) || empty($location) || empty($description)) {
         $error_message = "All fields are required";
-    } else {
-        // Handle image selection
-        $image_path = $_POST['image_path'] ?? '';
+    }
+    
+    // Handle image upload
+    if (isset($_FILES['car_image']) && $_FILES['car_image']['error'] == 0) {
+        $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+        $max_size = 5 * 1024 * 1024; // 5MB
         
-        if (empty($image_path)) {
-            $error_message = "Please select an image from the assets folder.";
+        $file_type = $_FILES['car_image']['type'];
+        $file_size = $_FILES['car_image']['size'];
+        $file_name = $_FILES['car_image']['name'];
+        
+        if (!in_array($file_type, $allowed_types)) {
+            $error_message = "Invalid file type. Only JPG, PNG, and WEBP are allowed.";
+        } elseif ($file_size > $max_size) {
+            $error_message = "File size too large. Maximum allowed size is 5MB.";
         } else {
-            // Validate that the image exists in the assets folder
-            $allowed_paths = array(
-                'assets/images/cars/',
-                'assets/images/'
-            );
+            $upload_dir = 'assets/images/cars/';
             
-            $valid_path = false;
-            foreach ($allowed_paths as $path) {
-                if (file_exists($path . $image_path)) {
-                    $valid_path = true;
-                    $image_path = $path . $image_path;
-                    break;
-                }
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
             }
             
-            if (!$valid_path) {
-                $error_message = "Invalid image path. Please select an image from the assets folder.";
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            $new_filename = uniqid() . '.' . $file_extension;
+            $target_path = $upload_dir . $new_filename;
+            
+            if (move_uploaded_file($_FILES['car_image']['tmp_name'], $target_path)) {
+                $image_path = 'cars/' . $new_filename;
+            } else {
+                $error_message = "Failed to upload image.";
             }
         }
-        
-        if (empty($error_message)) {
-            try {
-                // Insert car data into database
-                $query = "INSERT INTO cars (title, make, model, year, price_per_day, location, 
-                         description, image_url, posted_by, status) 
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'available')";
-                
-                $stmt = $conn->prepare($query);
-                if ($stmt === false) {
-                    throw new Exception("Failed to prepare query: " . $conn->error);
-                }
-                
-                $stmt->bind_param('sssidssis', $title, $make, $model, $year, $price, 
-                                $location, $description, $image_path, $_SESSION['user_id']);
-                
-                if ($stmt->execute()) {
-                    $success_message = "Car posted successfully!";
-                    // Clear form data after successful submission
-                    $_POST = array();
-                } else {
-                    $error_message = "Failed to post car: " . $stmt->error;
-                    throw new Exception("Failed to post car: " . $stmt->error);
-                }
-            } catch (Exception $e) {
-                error_log("Error posting car: " . $e->getMessage());
-                $error_message = "Failed to post car: " . $e->getMessage();
+    } else {
+        $error_message = "Please upload an image.";
+    }
+    
+    if (empty($error_message)) {
+        try {
+            // Insert car data into database
+            $query = "INSERT INTO cars (title, make, model, year, price_per_day, location, 
+                     description, image_url, posted_by, status) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'available')";
+            
+            $stmt = $conn->prepare($query);
+            if ($stmt === false) {
+                throw new Exception("Failed to prepare query: " . $conn->error);
             }
+            
+            $stmt->bind_param('sssidssis', $title, $make, $model, $year, $price, 
+                            $location, $description, $image_path, $_SESSION['user_id']);
+            
+            if ($stmt->execute()) {
+                $success_message = "Car posted successfully!";
+                // Clear form data after successful submission
+                $_POST = array();
+            } else {
+                $error_message = "Failed to post car: " . $stmt->error;
+                throw new Exception("Failed to post car: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            error_log("Error posting car: " . $e->getMessage());
+            $error_message = "Failed to post car: " . $e->getMessage();
         }
     }
 }
@@ -162,26 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="image_path">Car Image*</label>
-                    <select id="image_path" name="image_path" required>
-                        <option value="">Select an image</option>
-                        <?php
-                        // Get all images from the assets folder
-                        $image_dirs = array('assets/images/cars/', 'assets/images/');
-                        foreach ($image_dirs as $dir) {
-                            if (is_dir($dir)) {
-                                $images = glob($dir . '*.{jpg,jpeg,png,webp}', GLOB_BRACE);
-                                foreach ($images as $image) {
-                                    $relative_path = str_replace($dir, '', $image);
-                                    echo '<option value="' . htmlspecialchars($relative_path) . '">
-                                        ' . htmlspecialchars($relative_path) . '
-                                    </option>';
-                                }
-                            }
-                        }
-                        ?>
-                    </select>
-                    <p class="help-text">Select an image from the assets folder</p>
+                    <label for="car_image">Car Image*</label>
+                    <input type="file" id="car_image" name="car_image" accept="image/jpeg,image/png,image/webp" required>
+                    <p class="help-text">Upload a JPG, PNG, or WEBP image (max 5MB)</p>
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -193,4 +184,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include 'includes/footer.php'; ?>
 </body>
-</html> 
+</html>

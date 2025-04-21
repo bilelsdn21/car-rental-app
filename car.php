@@ -120,131 +120,138 @@ try {
                                     <p>As an agency, you cannot book cars directly. Please ask your clients to book through their personal accounts.</p>
                                 </div>
                             <?php else: ?>
-                                <div class="booking-section">
-                                    <?php if (isset($_SESSION['user_id'])): ?>
-                                        <?php if ($_SESSION['role'] === 'agency'): ?>
-                                            <div class="error-message">
-                                                <i class="fas fa-exclamation-circle"></i>
-                                                <p>Agencies are not allowed to book cars. Please use a regular user account to make bookings.</p>
-                                            </div>
-                                        <?php else: ?>
-                                            <form action="process_booking.php" method="POST" class="booking-form">
-                                                <input type="hidden" name="car_id" value="<?php echo $car['id']; ?>">
-                                                
-                                                <div class="form-group">
-                                                    <label for="pickup_date">Pickup Date</label>
-                                                    <input type="date" id="pickup_date" name="pickup_date" required 
-                                                           min="<?php echo date('Y-m-d'); ?>">
-                                                    <small id="pickup_date_error" class="error-text"></small>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <label for="return_date">Return Date</label>
-                                                    <input type="date" id="return_date" name="return_date" required>
-                                                    <small id="return_date_error" class="error-text"></small>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <label for="pickup_location">Pickup Location</label>
-                                                    <input type="text" id="pickup_location" name="pickup_location" 
-                                                           value="<?php echo htmlspecialchars($car['location']); ?>" required>
-                                                    <small id="pickup_location_error" class="error-text"></small>
-                                                </div>
+                                <form action="process_booking.php" method="POST" class="booking-form" id="bookingForm">
+                                    <input type="hidden" name="car_id" value="<?php echo $car['id']; ?>">
+                                    
+                                    <div class="form-group">
+                                        <label for="pickup_date">Pickup Date</label>
+                                        <input type="date" id="pickup_date" name="pickup_date" required 
+                                               min="<?php echo date('Y-m-d'); ?>">
+                                    </div>
 
-                                                <button type="submit" class="btn-primary btn-book">
-                                                    <i class="fas fa-calendar-check"></i> Book Now
-                                                </button>
-                                                
-                                                <div id="booking-result" class="booking-result"></div>
-                                            </form>
+                                    <div class="form-group">
+                                        <label for="return_date">Return Date</label>
+                                        <input type="date" id="return_date" name="return_date" required 
+                                               min="<?php echo date('Y-m-d'); ?>">
+                                    </div>
 
-                                            <script>
-                                            document.querySelector('.booking-form').addEventListener('submit', async function(e) {
-                                                e.preventDefault();
-                                                
-                                                const formData = new FormData(this);
-                                                const bookingResult = document.getElementById('booking-result');
-                                                
-                                                try {
-                                                    const response = await fetch('process_booking.php', {
-                                                        method: 'POST',
-                                                        body: formData
-                                                    });
-                                                    
-                                                    const result = await response.json();
-                                                    
-                                                    if (result.success) {
-                                                        bookingResult.innerHTML = `
-                                                            <div class="success-message">
-                                                                <i class="fas fa-check-circle"></i>
-                                                                <p>Booking successful! Your booking ID is: ${result.booking_id}</p>
-                                                            </div>
-                                                        `;
-                                                    } else {
-                                                        bookingResult.innerHTML = `
-                                                            <div class="error-message">
-                                                                <i class="fas fa-exclamation-circle"></i>
-                                                                <p>${result.message}</p>
-                                                            </div>
-                                                        `;
-                                                    }
-                                                } catch (error) {
-                                                    bookingResult.innerHTML = `
-                                                        <div class="error-message">
-                                                            <i class="fas fa-exclamation-circle"></i>
-                                                            <p>An error occurred: ${error.message}</p>
-                                                        </div>
-                                                    `;
-                                                }
-                                            });
-                                            </script>
-                                        <?php endif; ?>
-                                    <?php else: ?>
-                                        <div class="login-prompt">
-                                            <p>Please log in to book this car</p>
-                                            <a href="login.php?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" class="btn-primary">
-                                                <i class="fas fa-sign-in-alt"></i> Log In to Book
-                                            </a>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="pickup_location">Pickup Location</label>
+                                        <input type="text" id="pickup_location" name="pickup_location" required 
+                                               placeholder="Enter pickup location">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Total Price</label>
+                                        <input type="text" id="total_price" name="total_price" readonly 
+                                               placeholder="$0.00">
+                                    </div>
+
+                                    <button type="submit" class="btn-primary">
+                                        <i class="fas fa-check"></i> Confirm Booking
+                                    </button>
+                                </form>
+
+                                <div id="bookingResult" class="booking-result"></div>
 
                                 <script>
-                                function validateForm() {
-                                    let pickupDate = document.getElementById('pickup_date').value;
-                                    let returnDate = document.getElementById('return_date').value;
-                                    let pickupLocation = document.getElementById('pickup_location').value;
-
-                                    // Clear previous errors
-                                    document.getElementById('pickup_date_error').textContent = '';
-                                    document.getElementById('return_date_error').textContent = '';
-                                    document.getElementById('pickup_location_error').textContent = '';
-
-                                    // Validate dates
-                                    if (pickupDate && returnDate) {
-                                        let pickup = new Date(pickupDate);
-                                        let returnDateObj = new Date(returnDate);
-                                        let today = new Date();
-
-                                        if (pickup < today) {
-                                            document.getElementById('pickup_date_error').textContent = 'Pickup date cannot be in the past';
-                                            return false;
-                                        }
-
-                                        if (returnDateObj < pickup) {
-                                            document.getElementById('return_date_error').textContent = 'Return date must be after pickup date';
-                                            return false;
-                                        }
+                                function calculatePrice() {
+                                    const pickupDate = document.getElementById('pickup_date').value;
+                                    const returnDate = document.getElementById('return_date').value;
+                                    const totalPrice = document.getElementById('total_price');
+                                    
+                                    if (!pickupDate || !returnDate) {
+                                        totalPrice.value = '$0.00';
+                                        return;
                                     }
-
-                                    // Validate pickup location
-                                    if (pickupLocation.trim() === '') {
-                                        document.getElementById('pickup_location_error').textContent = 'Please enter a valid pickup location';
-                                        return false;
-                                    }
-
-                                    return true;
+                                    
+                                    const pricePerDay = <?php echo floatval($car['price_per_day']); ?>;
+                                    
+                                    const start = new Date(pickupDate);
+                                    const end = new Date(returnDate);
+                                    
+                                    // Calculate total days (inclusive of both dates)
+                                    const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                                    
+                                    // Calculate total price
+                                    const total = totalDays * pricePerDay;
+                                    
+                                    // Format the price
+                                    totalPrice.value = `$${total.toFixed(2)}`;
                                 }
+
+                                document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+                                    e.preventDefault();
+                                    
+                                    const form = this;
+                                    const bookingResult = document.getElementById('bookingResult');
+                                    const submitButton = form.querySelector('button[type="submit"]');
+                                    
+                                    // Disable form and show loading state
+                                    submitButton.disabled = true;
+                                    submitButton.innerHTML = `
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Processing...
+                                    `;
+                                    
+                                    try {
+                                        const formData = new FormData(form);
+                                        const response = await fetch('process_booking.php', {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+                                        
+                                        const result = await response.json();
+                                        
+                                        // Clear previous result
+                                        bookingResult.innerHTML = '';
+                                        
+                                        // Show appropriate message
+                                        if (result.success) {
+                                            bookingResult.innerHTML = `
+                                                <div class="success-message">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    <h3>Booking Successful!</h3>
+                                                    <p>Your booking has been confirmed.</p>
+                                                    <p>Booking ID: ${result.booking_id}</p>
+                                                    <p>Total Price: $${result.total_price.toFixed(2)}</p>
+                                                    <p>Check your email for booking confirmation.</p>
+                                                </div>
+                                            `;
+                                        } else {
+                                            bookingResult.innerHTML = `
+                                                <div class="error-message">
+                                                    <i class="fas fa-exclamation-circle"></i>
+                                                    <h3>Booking Failed</h3>
+                                                    <p>${result.message}</p>
+                                                </div>
+                                            `;
+                                        }
+                                    } catch (error) {
+                                        bookingResult.innerHTML = `
+                                            <div class="error-message">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                <h3>Error</h3>
+                                                <p>An unexpected error occurred. Please try again later.</p>
+                                                <p>Details: ${error.message}</p>
+                                            </div>
+                                        `;
+                                    } finally {
+                                        // Re-enable form and restore button text
+                                        submitButton.disabled = false;
+                                        submitButton.innerHTML = `
+                                            <i class="fas fa-check"></i>
+                                            Confirm Booking
+                                        `;
+                                    }
+                                });
+
+                                // Add event listeners
+                                document.getElementById('pickup_date').addEventListener('change', calculatePrice);
+                                document.getElementById('return_date').addEventListener('change', calculatePrice);
+                                
+                                // Calculate price when form loads
+                                calculatePrice();
                                 </script>
                             <?php endif; ?>
                         <?php else: ?>
@@ -262,41 +269,119 @@ try {
     </div>
 
     <style>
+    .booking-result {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .success-message, .error-message {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .success-message {
+        background-color: #f0f9eb;
+        color: #2e7d32;
+        border: 1px solid #a2d149;
+    }
+
     .error-message {
         background-color: #fff3f3;
-        border: 1px solid #ffcccc;
-        color: #d32f2f;
-        padding: 1rem;
-        border-radius: 8px;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    .success-message i, .error-message i {
+        font-size: 2rem;
         margin-bottom: 1rem;
     }
 
-    .error-message i {
-        color: #d32f2f;
-        margin-right: 0.5rem;
-    }
-
-    .agency-message {
-        background-color: #f5f5f5;
-        border: 1px solid #e0e0e0;
-        color: #616161;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-    }
-
-    .agency-message i {
-        color: #616161;
-        margin-right: 0.5rem;
+    .success-message h3, .error-message h3 {
         margin: 0;
-        font-size: 16px;
+        font-size: 1.25rem;
     }
 
-    .error-text {
-        color: #d32f2f;
-        font-size: 14px;
-        margin-top: 5px;
+    .success-message p, .error-message p {
+        margin: 0.5rem 0;
+        color: inherit;
+    }
+
+    .success-message .booking-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .success-message .booking-details div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .success-message .booking-details i {
+        color: #2e7d32;
+    }
+
+    .error-message .booking-details i {
+        color: #c62828;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
         display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+
+    .btn-primary {
+        background-color: #1976d2;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: #1565c0;
+    }
+
+    .btn-primary:disabled {
+        background-color: #b0bec5;
+        cursor: not-allowed;
+    }
+
+    .btn-primary i {
+        font-size: 1rem;
     }
 
     .car-details-container {
