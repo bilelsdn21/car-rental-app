@@ -1,3 +1,6 @@
+
+php
+CopyInsert
 <?php
 session_start();
 require_once 'db.php';
@@ -6,69 +9,6 @@ require_once 'db.php';
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'agency') {
     header('Location: login.php');
     exit();
-}
-
-// Handle car deletion
-if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-    $car_id = (int)$_GET['id'];
-    $user_id = $_SESSION['user_id'];
-    
-    try {
-        // First check if the car belongs to this agency
-        $stmt = $conn->prepare("SELECT image_url FROM cars WHERE id = ? AND posted_by = ?");
-        $stmt->bind_param('ii', $car_id, $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $car = $result->fetch_assoc();
-        
-        if ($car) {
-            // First check if there are any active bookings
-            $stmt = $conn->prepare("SELECT COUNT(*) as booking_count FROM bookings WHERE car_id = ? AND status IN ('pending', 'confirmed')");
-            if (!$stmt) {
-                throw new Exception("Failed to prepare booking check query: " . $conn->error);
-            }
-            
-            $stmt->bind_param('i', $car_id);
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to execute booking check query: " . $stmt->error);
-            }
-            
-            $result = $stmt->get_result();
-            if (!$result) {
-                throw new Exception("Failed to get booking check result: " . $stmt->error);
-            }
-            
-            $booking = $result->fetch_assoc();
-            if ($booking['booking_count'] > 0) {
-                throw new Exception("Cannot delete car with active bookings. Please cancel all pending bookings first.");
-            }
-
-            // Delete the car from database
-            $stmt = $conn->prepare("DELETE FROM cars WHERE id = ? AND posted_by = ?");
-            if (!$stmt) {
-                throw new Exception("Failed to prepare delete query: " . $conn->error);
-            }
-            
-            $stmt->bind_param('ii', $car_id, $user_id);
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to delete car: " . $stmt->error);
-            }
-            
-            // Check if rows were affected
-            if ($conn->affected_rows > 0) {
-                header('Location: my_cars.php?success=1');
-                exit();
-            } else {
-                throw new Exception("No rows affected. Car may not exist.");
-            }
-        } else {
-            throw new Exception("Car not found or does not belong to this agency");
-        }
-    } catch (Exception $e) {
-        error_log("Error deleting car: " . $e->getMessage());
-        header('Location: my_cars.php?error=1');
-        exit();
-    }
 }
 
 // Fetch agency's cars

@@ -4,7 +4,7 @@ require_once 'db.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -13,24 +13,24 @@ $car_id = (int)$_GET['id'];
 $user_id = (int)$_SESSION['user_id'];
 $role = $_SESSION['role'];
 
-try {
-    // Start transaction
-    mysqli_autocommit($conn, FALSE);
+// Debug logging
+error_log("Delete request - Car ID: $car_id, User ID: $user_id, Role: $role");
 
-    // Check if user is authorized to delete this car
-    $stmt = $conn->prepare("SELECT posted_by, image_url FROM cars WHERE id = ?");
+try {
+    // Get car details and verify ownership
+    $stmt = $conn->prepare("SELECT id, posted_by FROM cars WHERE id = ?");
     if (!$stmt) {
         throw new Exception("Failed to prepare query: " . $conn->error);
     }
     
     $stmt->bind_param("i", $car_id);
     if (!$stmt->execute()) {
-        throw new Exception("Failed to execute query: " . $stmt->error);
+        throw new Exception("Failed to execute query: " . $conn->error);
     }
     
     $result = $stmt->get_result();
     if (!$result) {
-        throw new Exception("Failed to get result: " . $stmt->error);
+        throw new Exception("Failed to get result: " . $conn->error);
     }
     
     $car = $result->fetch_assoc();
@@ -44,53 +44,26 @@ try {
         throw new Exception("You are not authorized to delete this car");
     }
 
-    // Check for active bookings
-    $stmt = $conn->prepare("SELECT COUNT(*) as booking_count FROM bookings WHERE car_id = ? AND status IN ('pending', 'confirmed')");
-    if (!$stmt) {
-        throw new Exception("Failed to prepare booking check query: " . $conn->error);
-    }
-    
-    $stmt->bind_param("i", $car_id);
-    if (!$stmt->execute()) {
-        throw new Exception("Failed to execute booking check query: " . $stmt->error);
-    }
-    
-    $result = $stmt->get_result();
-    if (!$result) {
-        throw new Exception("Failed to get booking check result: " . $stmt->error);
-    }
-    
-    $booking = $result->fetch_assoc();
-    if ($booking['booking_count'] > 0) {
-        throw new Exception("Cannot delete car with active bookings. Please cancel all pending bookings first.");
-    }
-
-    // Delete the car
+    // Deleting the car - with cascading delete for bookings
     $stmt = $conn->prepare("DELETE FROM cars WHERE id = ?");
     if (!$stmt) {
-        throw new Exception("Failed to prepare delete query: " . $conn->error);
+        throw new Exception("Failed to prepare deletion query: " . $conn->error);
     }
     
     $stmt->bind_param("i", $car_id);
     if (!$stmt->execute()) {
-        throw new Exception("Failed to delete car: " . $stmt->error);
+        throw new Exception("Failed to execute delete query: " . $conn->error);
     }
 
-    // Commit transaction
-    mysqli_commit($conn);
-    
-    // Redirect with success message
+    // Redirect back to my_cars.php with success message
     header("Location: my_cars.php?success=1");
     exit();
 
 } catch (Exception $e) {
-    // Rollback transaction on error
-    mysqli_rollback($conn);
+    // Display the error
+    error_log("Deletion error - Car ID: $car_id, User ID: $user_id, Role: $role - Error: " . $e->getMessage());
     
-    // Log the error
-    error_log("Car deletion error - Car ID: $car_id, User ID: $user_id, Role: $role - Error: " . $e->getMessage());
-    
-    // Redirect with error message
+    // Redirect back to my_cars.php with error message
     header("Location: my_cars.php?error=1");
     exit();
 }
