@@ -10,16 +10,16 @@
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
-                <a href="rental-site/index.php">Home</a>
-                <a href="rental-site/catalog.php">Cars</a>
-                <a href="rental-site/about.php">About</a>
-                <a href="rental-site/contact.php">Contact</a>
+                <a href="index.php">Home</a>
+                <a href="catalog.php">Cars</a>
+                <a href="about.php">About</a>
+                <a href="contact.php">Contact</a>
             </div>
             <div class="footer-section">
                 <h3>Contact Info</h3>
                 <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
                 <p><i class="fas fa-envelope"></i> info@rcar.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Car Street, City, Country</p>
+                <p><i class="fas fa-map-marker-alt"></i> Rue Lamine Abassi, Hammam Sousse 4011,Tunisia</p>
             </div>
         </div>
         <div class="footer-bottom">

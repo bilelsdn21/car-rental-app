@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="info-card">
                         <i class="fas fa-map-marker-alt"></i>
                         <h3>Visit Us</h3>
-                        <p>123 Car Street</p>
-                        <p>City, State 12345</p>
-                        <p>Country</p>
+                        <p>Rue Lamine Abassi</p>
+                        <p>Sousse,Hammam Sousse 4011</p>
+                        <p>Tunisia</p>
                     </div>
                     
                     <div class="info-card">
@@ -86,37 +86,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="error"><?php echo htmlspecialchars($error); ?></div>
                     <?php endif; ?>
 
-                    <form class="contact-form" method="POST" action="">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <div class="input-group">
-                                <i class="fas fa-user"></i>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                        </div>
+                    <form class="form">
+                        <div class="flex">
+                            <label>
+                                <input required="" placeholder="" type="text" class="input">
+                                <span>first name</span>
+                            </label>
+                    
+                            <label>
+                                <input required="" placeholder="" type="text" class="input">
+                                <span>last name</span>
+                            </label>
+                        </div>  
+                                
+                        <label>
+                            <input required="" placeholder="" type="email" class="input">
+                            <span>email</span>
+                        </label> 
+                            
+                        <label>
+                            <input required="" type="tel" placeholder="" class="input">
+                            <span>contact number</span>
+                        </label>
+                        <label>
+                            <textarea required="" rows="3" placeholder="" class="input01"></textarea>
+                            <span>message</span>
+                        </label>
                         
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <div class="input-group">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <div class="input-group">
-                                <i class="fas fa-tag"></i>
-                                <input type="text" id="subject" name="subject" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">Send Message</button>
+                        <button class="fancy" href="#">
+                        <span class="top-key"></span>
+                        <span class="text">submit</span>
+                        <span class="bottom-key-1"></span>
+                        <span class="bottom-key-2"></span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -127,13 +129,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <div class="map-container">
                 <!-- Replace with your actual Google Maps embed code -->
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.305935303!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1645454332403!5m2!1sen!2s" 
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7691.820705000249!2d10.600841816381335!3d35.848703687632614!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd8a6826eca57b%3A0xf698bd059d8e2d13!2s%C3%89cole%20sup%C3%A9rieure%20des%20sciences%20et%20de%20la%20technologie%20de%20Hammam%20Sousse!5e0!3m2!1sen!2stn!4v1745340900462!5m2!1sen!2stn" 
                     width="100%" 
                     height="450" 
                     style="border:0;" 
                     allowfullscreen="" 
-                    loading="lazy">
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
         </div>

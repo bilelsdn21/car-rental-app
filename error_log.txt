@@ -79,3 +79,39 @@ Stack trace:
 [22-Apr-2025 21:45:04 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-07-08, return=2025-07-16
 [22-Apr-2025 21:45:04 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
 [22-Apr-2025 21:45:04 Europe/Berlin] Booking completed for car ID: 10 by user ID: 5
+[22-Apr-2025 23:03:50 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:50 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
+[22-Apr-2025 23:03:50 Europe/Berlin] Booking completed for car ID: 10 by user ID: 7
+[22-Apr-2025 23:03:55 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:55 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:03:55 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:55 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:03:56 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:56 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:03:57 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:57 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:03:57 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:03:57 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:04:04 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-27
+[22-Apr-2025 23:04:04 Europe/Berlin] Booking failed: Car is not available during selected dates
+[22-Apr-2025 23:04:56 Europe/Berlin] Received booking POST: car_id=2, pickup=2025-04-30, return=2025-05-02
+[22-Apr-2025 23:04:56 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
+[22-Apr-2025 23:04:56 Europe/Berlin] Booking completed for car ID: 2 by user ID: 7
+[22-Apr-2025 23:05:21 Europe/Berlin] Received booking POST: car_id=3, pickup=2025-05-08, return=2025-05-16
+[22-Apr-2025 23:05:21 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
+[22-Apr-2025 23:05:21 Europe/Berlin] Booking completed for car ID: 3 by user ID: 7
+[22-Apr-2025 23:06:28 Europe/Berlin] Received booking POST: car_id=1, pickup=2025-05-08, return=2025-05-09
+[22-Apr-2025 23:06:28 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
+[22-Apr-2025 23:06:28 Europe/Berlin] Booking completed for car ID: 1 by user ID: 7
+[22-Apr-2025 23:07:04 Europe/Berlin] Received booking POST: car_id=10, pickup=2025-04-28, return=2025-05-04
+[22-Apr-2025 23:07:04 Europe/Berlin] Notification failed: Table 'rental_site.notifications' doesn't exist
+[22-Apr-2025 23:07:04 Europe/Berlin] Booking completed for car ID: 10 by user ID: 7
+[23-Apr-2025 08:56:03 UTC] Received booking POST: car_id=10, pickup=2025-04-23, return=2025-04-25
+[23-Apr-2025 08:56:03 UTC] Notification failed: Table 'rental_site.notifications' doesn't exist
+[23-Apr-2025 08:56:03 UTC] Booking completed for car ID: 10 by user ID: 1
+[23-Apr-2025 08:58:52 UTC] Received booking POST: car_id=1, pickup=2025-04-24, return=2025-04-26
+[23-Apr-2025 08:58:52 UTC] Notification failed: Table 'rental_site.notifications' doesn't exist
+[23-Apr-2025 08:58:52 UTC] Booking completed for car ID: 1 by user ID: 7
+[23-Apr-2025 12:08:47 UTC] Received booking POST: car_id=12, pickup=2025-04-24, return=2025-04-26
+[23-Apr-2025 12:08:47 UTC] Notification failed: Table 'rental_site.notifications' doesn't exist
+[23-Apr-2025 12:08:47 UTC] Booking completed for car ID: 12 by user ID: 7

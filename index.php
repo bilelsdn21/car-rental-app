@@ -99,7 +99,7 @@ require_once 'db.php';
                         <h3><?php echo htmlspecialchars($car['make'] . ' ' . $car['model']); ?></h3>
                         <p class="agency">By <?php echo htmlspecialchars($car['agency_name']); ?></p>
                         <p class="price">$<?php echo number_format($car['price_per_day'], 2); ?> / day</p>
-                        <a href="car.php?id=<?php echo $car['id']; ?>" class="rent-btn">View Details</a>
+                        <a href="car.php?id=<?php echo $car['id']; ?>" class="view-details-btn">View Details</a>
                     </div>
                 </div>
                 <?php endwhile; 
@@ -135,7 +135,7 @@ require_once 'db.php';
                 <div class="footer-section">
                     <h3>For Agencies</h3>
                     <a href="register.php?type=agency">Register Agency</a>
-                    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'agency'): ?>
+                    <?php if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'agency'): ?>
                         <a href="manage_cars.php">Manage Cars</a>
                         <a href="bookings.php">Manage Bookings</a>
                     <?php endif; ?>

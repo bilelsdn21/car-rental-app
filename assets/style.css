@@ -1,14 +1,19 @@
 /* Global Styles */
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #1e40af;
-    --success-color: #22c55e;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --text-color: #1f2937;
-    --text-light: #6b7280;
-    --bg-light: #f3f4f6;
+    --primary-color: #007bff; /* Updated primary color */
+    --primary-color-dark: #0056b3; /* Updated primary dark color */
+    --secondary-color: #6c757d; /* Added secondary color */
+    --text-dark: #212529; /* Updated text dark color */
+    --text-light: #adb5bd; /* Updated text light color */
+    --extra-light: #f8f9fa; /* Updated extra light color */
     --white: #ffffff;
+    --bg-light: #f8f9fa; /* Added background light color */
+    --success-color: #28a745; /* Added success color */
+    --warning-color: #ffc107; /* Added warning color */
+    --danger-color: #dc3545; /* Added danger color */
+    --max-width: 1200px;
+    --header-font: "Syncopate", sans-serif;
+    --body-font: "Poppins", sans-serif;
 }
 
 * {
@@ -17,10 +22,11 @@
     box-sizing: border-box;
 }
 
+/* Updated styles to match the new :root variables */
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: var(--body-font), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.5;
-    color: var(--text-color);
+    color: var(--text-dark);
     background-color: var(--bg-light);
 }
 
@@ -28,6 +34,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    margin-top: 2rem;
 }
 
 /* Navbar Styles */
@@ -36,7 +43,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: var(--white);
+    background-color: gray;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
@@ -46,10 +53,12 @@ body {
 }
 
 .logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
     text-decoration: none;
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: var(--header-font);
+    color: var(--white);
+    letter-spacing: -2px;
 }
 
 .nav-links {
@@ -58,13 +67,18 @@ body {
 }
 
 .nav-links a {
-    color: var(--text-color);
+    display:inline-block;
     text-decoration: none;
-    font-weight: 500;
+    color: var(--white);
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.4s ease-in-out;
+    white-space: nowrap;
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
+    color: var(--text-dark);
+    transform: scale(1.12) ;
 }
 
 .nav-user {
@@ -77,15 +91,49 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    
 }
 
 .user-menu span {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .user-menu a {
-    color: var(--text-color);
     text-decoration: none;
+    font-weight: bold;
+    background-color: var(--text-dark);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+}
+.user-menu a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+.user-menu a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: var(--text-dark);
+    color: var(--white);
+}
+.user-menu a:hover::before {
+    left: 100%;
 }
 
 /* Dashboard Layout */
@@ -99,24 +147,35 @@ body {
 
 .sidebar {
     width: 250px;
-    background-color: var(--white);
-    padding: 1.5rem;
-    border-right: 1px solid #e5e7eb;
+    height: calc(100vh - 64px);
+    background-color: var(--text-dark);
     position: fixed;
-    top: 64px;
-    bottom: 0;
+    left: 0;
+    top: 80px;
+    z-index: 900;
+    transition: all 0.3s ease;
+    transition-delay: 0.2s;
+    color: var(--white);
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-header h2 {
-    font-size: 1.25rem;
-    color: var(--text-color);
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem; /* Ensure this matches the size on other pages */
+    font-weight: bold; /* Add this if needed for consistency */
+    color: var(--white);
+    margin: 0;
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
+    padding: 1rem;
 }
 
 .sidebar-nav a {
@@ -124,19 +183,26 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    color: var(--text-color);
+    color: var(--white);
     text-decoration: none;
     border-radius: 0.5rem;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
 }
 
 .sidebar-nav a:hover {
-    background-color: var(--bg-light);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-nav a.active {
-    background-color: var(--primary-color);
+    background-color: gray;
     color: var(--white);
+}
+
+/* Optional: Add icon styles */
+.sidebar-nav a i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
 }
 
 /* Main Content */
@@ -148,15 +214,40 @@ body {
     z-index: 2000;
 }
 
-.dashboard-header {
-    margin-bottom: 2rem;
+.dashboard-header h2{
+    font-size: 1.875rem;
+    margin-top: 5rem;
 }
 
 .dashboard-header h1 {
     font-size: 1.875rem;
     font-weight: bold;
+    padding-bottom: 1rem;
+    margin-top: 5rem;
 }
-
+.btn-add-car {
+    background-color: var(--text-dark);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.btn-add-car:hover {
+    background-color: gray;
+}
+.stat-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 7px 0 7px 0;
+}
+.stat-card p{
+    font-size: 1.17em;
+}
 /* Bookings Styles */
 .bookings-header {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -174,72 +265,7 @@ body {
     margin: 0;
 }
 
-/* Booking Cards */
-.bookings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
 
-.booking-card {
-    background: var(--white);
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.booking-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.booking-image {
-    position: relative;
-    overflow: hidden;
-    height: 250px;
-}
-
-.booking-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.booking-image:hover img {
-    transform: scale(1.1);
-}
-
-.booking-status {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 2rem;
-    font-weight: 500;
-    color: var(--white);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.booking-status.pending {
-    background: var(--warning-color);
-}
-
-.booking-status.confirmed {
-    background: var(--success-color);
-}
-
-.booking-status.cancelled {
-    background: var(--danger-color);
-}
-
-.booking-details {
-    padding: 1.5rem;
-}
 
 .car-info {
     margin-bottom: 1.5rem;
@@ -248,7 +274,7 @@ body {
 .car-info h3 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-    color: var(--text-color);
+    color: var(--text-dark);
 }
 
 .agency {
@@ -269,23 +295,37 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem;
-    background: var(--bg-light);
+    background: rgba(128, 128, 128, 0.1);
     border-radius: 0.5rem;
+    height: 50px;
+    
 }
 
 .info-item i {
-    color: var(--primary-color);
+    color: var(--text-dark);
     font-size: 1.1rem;
 }
 
 .info-item.price {
-    background: var(--primary-color);
+    background-color: var(--secondary-color);
+    color: var(--white);
+    
+}
+.info-item.price i {
+    color: var(--white);
+}
+.info-item.total i {
+    color: var(--white);
+}
+.info-item.price span {
     color: var(--white);
 }
 
 .info-item.total {
-    background: var(--success-color);
+    background: var(--secondary-color);
     color: var(--white);
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .booking-actions {
@@ -293,7 +333,206 @@ body {
     justify-content: flex-end;
     gap: 1rem;
 }
-
+/* From Uiverse.io by somshri16 */ 
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .message {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+  .flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+  
+  .form label {
+    position: relative;
+    width: 100%;
+  }
+  
+  .form label .input {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 5px;
+  }
+  
+  .form label .input + span {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    color: grey;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+  }
+  
+  .form label .input:placeholder-shown + span {
+    top: 15px;
+    font-size: 0.9em;
+  }
+  
+  .form label .input:focus + span,.form label .input:valid + span {
+    top: 30px;
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+  
+  .form label .input:valid + span {
+    color: green;
+  }
+  
+  .input01 {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 5px;
+  }
+  
+  .form label .input01 + span {
+    position: absolute;
+    left: 10px;
+    top: 50px;
+    color: grey;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+  }
+  
+  .form label .input01:placeholder-shown + span {
+    top: 40px;
+    font-size: 0.9em;
+  }
+  
+  .form label .input01:focus + span,.form label .input01:valid + span {
+    top: 50px;
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+  
+  .form label .input01:valid + span {
+    color: green;
+  }
+  
+  .fancy {
+    background-color: transparent;
+    border: 2px solid rgba(105, 105, 105, 0.397);
+    border-radius: 0px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 390;
+    letter-spacing: 2px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 8px 30px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    transition: all 0.3s ease-in-out;
+    user-select: none;
+    font-size: 13px;
+    width: 100%;
+  }
+  
+  .fancy::before {
+    content: " ";
+    width: 1.7rem;
+    height: 2px;
+    background: rgba(105, 105, 105, 0.397);
+    top: 50%;
+    left: 1.5em;
+    position: absolute;
+    transform: translateY(-50%);
+    transform: translateX(230%);
+    transform-origin: center;
+    transition: all 0.3s linear, width 0.3s linear;
+  }
+  
+  .fancy .text {
+    font-size: 1.125em;
+    line-height: 1.33333em;
+    padding-left: 2em;
+    display: block;
+    text-align: left;
+    transition: all 0.3s ease-in-out;
+    text-transform: lowercase;
+    text-decoration: none;
+    color: grey;
+    transform: translateX(30%);
+  }
+  
+  .fancy .top-key {
+    height: 2px;
+    width: 1.5625rem;
+    top: -2px;
+    left: 0.625rem;
+    position: absolute;
+    background: white;
+    transition: width 0.5s ease-out, left 0.3s ease-out;
+  }
+  
+  .fancy .bottom-key-1 {
+    height: 2px;
+    width: 1.5625rem;
+    right: 1.875rem;
+    bottom: -2px;
+    position: absolute;
+    background: white;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+  }
+  
+  .fancy .bottom-key-2 {
+    height: 2px;
+    width: 0.625rem;
+    right: 0.625rem;
+    bottom: -2px;
+    position: absolute;
+    background: white;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+  }
+  
+  .fancy:hover {
+    background: var(--text-dark);
+    border-color: var(--text-dark);
+  }
+  
+  .fancy:hover::before {
+    width: 1.5rem;
+    background: white;
+  }
+  
+  .fancy:hover .text {
+    color: white;
+    padding-left: 1.5em;
+  }
+  
+  .fancy:hover .top-key {
+    left: -2px;
+    width: 0px;
+  }
+  
+  .fancy:hover .bottom-key-1,
+   .fancy:hover .bottom-key-2 {
+    right: 0;
+    width: 0;
+  }
 /* No Results */
 .no-results {
     display: flex;
@@ -318,7 +557,7 @@ body {
 .empty-state h2 {
     font-size: 1.75rem;
     margin-bottom: 1rem;
-    color: var(--text-color);
+    color: var(--text-dark);
 }
 
 .empty-state p {
@@ -376,7 +615,7 @@ body {
     background-color: var(--white);
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .recent-activity h2 {
@@ -404,7 +643,7 @@ body {
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: var(--primary-color);
+    background-color: var(--text-dark);
     color: var(--white);
     border-radius: 9999px;
 }
@@ -427,7 +666,7 @@ body {
 
 .status-pending {
     background-color: var(--warning-color);
-    color: var(--white);
+    color: var (--white);
 }
 
 .status-accepted {
@@ -501,6 +740,9 @@ body {
 .hero-content {
     max-width: 800px;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .hero h1 {
@@ -528,7 +770,7 @@ body {
     background: white;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 450px;
     text-align: center;
@@ -556,7 +798,7 @@ body {
 
 .input-group i {
     position: absolute;
-    left: 15px;
+    left: 21rem;
     top: 50%;
     transform: translateY(-50%);
     color: #666;
@@ -574,24 +816,8 @@ body {
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: #007bff;
+    border-color: #000000;
     outline: none;
-}
-
-.auth-btn {
-    width: 100%;
-    padding: 12px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.auth-btn:hover {
-    background: #0056b3;
 }
 
 .auth-links {
@@ -602,34 +828,54 @@ body {
     margin-bottom: 15px;
     color: #666;
 }
-
+.lak{
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: color 0.3s;
+    text-decoration: none;
+}
+.lak:hover {
+    color: rgb(18, 53, 157);
+}
 .register-options {
     display: flex;
     gap: 10px;
     justify-content: center;
 }
-
-.btn-outline {
-    padding: 8px 20px;
-    border: 2px solid #007bff;
-    border-radius: 5px;
-    color: #007bff;
+.register-options a{
     text-decoration: none;
-    transition: all 0.3s;
 }
-
-.btn-outline:hover {
-    background: #007bff;
+.btn-out {
+    display: flex;
+    width: 300px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #15191d ;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out ;
+}
+.btn-out:hover {
+    cursor: pointer;
+    background-color: #737373;
     color: white;
 }
+
 
 /* Search Form */
 .search-form {
     background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     margin-top: 30px;
+    width: 65vw;
+    transform: translateX(-6%);
 }
 
 .search-grid {
@@ -647,7 +893,7 @@ body {
     display: block;
     margin-bottom: 8px;
     color: #333;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .search-group input {
@@ -656,10 +902,13 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1em;
+    height: 48px;
 }
-
+#location{
+    width: 16vw;
+}
 .search-btn {
-    background: #007bff;
+    background: var(--text-dark);
     color: white;
     border: none;
     padding: 12px 25px;
@@ -668,10 +917,11 @@ body {
     font-size: 1.2em;
     height: 48px;
     transition: background-color 0.3s;
+    width: 10vw;
 }
 
 .search-btn:hover {
-    background: #0056b3;
+    background: gray;
 }
 
 /* Features Section */
@@ -697,7 +947,7 @@ body {
     padding: 30px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s;
 }
 
@@ -707,7 +957,7 @@ body {
 
 .feature-card i {
     font-size: 2.5em;
-    color: #007bff;
+    color: var(--text-dark);
     margin-bottom: 20px;
 }
 
@@ -728,8 +978,10 @@ body {
     background: white;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s;
+    margin-top: 2rem;
+    padding: 1rem;
 }
 
 .car-card:hover {
@@ -754,10 +1006,38 @@ body {
 .price {
     font-size: 1.5em;
     font-weight: bold;
-    color: #28a745;
-    margin: 10px 0;
+    color: #000000;
+    margin:  0;
+    margin-bottom: 1rem;
 }
-
+.view-details-btn{
+    background: var(--text-dark);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: auto; 
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    justify-self: center;
+    
+}
+.view-details-btn:hover {
+    background: gray;
+    color: white;
+}
+.view-details-btn i {
+    width: 20px;
+    margin-right: 10px;
+    color: var(--white);
+    display: flex;
+    align-self: center;
+}
 .agency {
     font-size: 0.9em;
     color: #666;
@@ -807,7 +1087,7 @@ footer {
     background: white;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     margin: 20px auto;
 }
@@ -835,19 +1115,24 @@ textarea {
 }
 
 button, .button {
-    background: #007bff;
-    color: white;
-    padding: 10px 15px;
+    display: flex;
+    width: 300px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    font-size: 20px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s;
+    border-radius: 6px;
+    background-color: #15191d ;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out ;
 }
 
 button:hover, .button:hover {
-    background: #0056b3;
+    cursor: pointer;
+    background-color: #737373;
+    color: white;
 }
 
 .error {
@@ -862,8 +1147,7 @@ button:hover, .button:hover {
 /* Catalog Header */
 .catalog-header {
     background: #f8f9fa;
-    padding: 100px 0 30px;
-    margin-bottom: 30px;
+    padding: 100px 0 0;
 }
 
 .catalog-header h1 {
@@ -876,7 +1160,7 @@ button:hover, .button:hover {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .filter-form {
@@ -907,24 +1191,26 @@ button:hover, .button:hover {
 }
 
 .filter-btn {
-    background: #007bff;
+    background:var(--text-dark);
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     height: 40px;
+    width: 100%;
 }
 
 .filter-btn:hover {
-    background: #0056b3;
+    background: gray;
+    color:var(--text-dark);
 }
 
 /* Car Card Specific Styles */
 .rent-btn {
-    background: #28a745;
+    background: var(--text-dark);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -937,7 +1223,7 @@ button:hover, .button:hover {
 }
 
 .rent-btn:hover {
-    background: #218838;
+    background: gray;
 }
 
 /* Responsive Design Updates */
@@ -955,11 +1241,11 @@ button:hover, .button:hover {
     }
 }
 
-/* Data Tables */
+/* Data Tables - Updated Theme */
 .table-container {
     background-color: var(--white);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     overflow-x: auto;
     margin-top: 1.5rem;
 }
@@ -967,23 +1253,39 @@ button:hover, .button:hover {
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 14px;
+    text-align: left;
+}
+
+.data-table thead tr {
+    background-color: var(--text-dark);
+    color: var(--white);
+    font-weight: 600;
 }
 
 .data-table th,
 .data-table td {
-    padding: 1rem;
-    text-align: left;
+    padding: 12px 15px;
     border-bottom: 1px solid #e5e7eb;
 }
 
-.data-table th {
-    background-color: #f8fafc;
-    font-weight: 600;
-    color: var(--text-color);
+.data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
 }
 
-.data-table tr:hover {
-    background-color: #f8fafc;
+.data-table tbody tr:hover {
+    background-color: #f2f2f2;
+    transition: background-color 0.2s ease;
+}
+.table-light tr{
+    background-color: var(--text-dark);
+    color: var(--white);
+}
+
+/* Optional: Add footer styling if needed */
+.data-table tfoot tr {
+    background-color: #f8f9fa;
+    font-weight: 600;
 }
 
 .actions {
@@ -1001,7 +1303,7 @@ button:hover, .button:hover {
     border-radius: 0.375rem;
     border: none;
     background: none;
-    color: var(--text-color);
+    color: var(--text-dark);
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -1038,39 +1340,74 @@ button:hover, .button:hover {
     align-items: center;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
+.btn-primary, .btn-outline {
+    background-color: var(--text-dark);
     color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    text-decoration: none;
-    transition: background-color 0.2s;
-}
-
-.btn-primary:hover {
-    background-color: var(--secondary-color);
-}
-
-.btn-outline {
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     text-decoration: none;
     transition: all 0.2s;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: var(--text-dark);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
 }
-
-.btn-outline:hover {
-    background-color: var(--primary-color);
+.btn-primary::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+.btn-primary, .btn-outline:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: var(--text-dark);
     color: var(--white);
 }
+.btn-primary:hover::before {
+    left: 100%;
+}
+.btn-outline::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+.btn-outline:hover::before {
+    left: 100%;
+}
+
 
 /* Contact Page Styles */
 .contact-header {
     background-color: #f8f9fa;
-    padding: 60px 0;
+    padding: 60px 0 0 0;
     text-align: center;
-    margin-bottom: 50px;
 }
 
 .contact-header h1 {
@@ -1101,13 +1438,13 @@ button:hover, .button:hover {
     background-color: #fff;
     padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
 .info-card i {
     font-size: 2rem;
-    color: #007bff;
+    color: var(--text-dark);
     margin-bottom: 15px;
 }
 
@@ -1126,7 +1463,7 @@ button:hover, .button:hover {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .contact-form .form-group {
@@ -1173,20 +1510,6 @@ button:hover, .button:hover {
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
-.submit-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.submit-btn:hover {
-    background-color: #0056b3;
-}
 
 .success {
     background-color: #d4edda;
@@ -1248,7 +1571,7 @@ button:hover, .button:hover {
 
 .bookings-header h1 {
     font-size: 2.5em;
-    color: var(--text-color);
+    color: var(--text-dark);
     margin-bottom: 10px;
 }
 
@@ -1263,7 +1586,7 @@ button:hover, .button:hover {
     background: var(--white);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s;
 }
 
@@ -1316,7 +1639,7 @@ button:hover, .button:hover {
 .booking-details h3 {
     font-size: 1.3em;
     margin-bottom: 10px;
-    color: var(--text-color);
+    color: var(--text-dark);
 }
 
 .booking-info {
@@ -1337,7 +1660,7 @@ button:hover, .button:hover {
 .total-price {
     font-size: 1.2em;
     font-weight: 600;
-    color: var(--text-color) !important;
+    color: var(--text-dark) !important;
 }
 
 .cancel-form {
@@ -1345,7 +1668,7 @@ button:hover, .button:hover {
 }
 
 .btn-danger {
-    background-color: var(--danger-color);
+    background-color: var(--text-dark);
     color: var(--white);
     padding: 10px 20px;
     border: none;
@@ -1357,12 +1680,15 @@ button:hover, .button:hover {
 }
 
 .btn-danger:hover {
-    background-color: #dc2626;
+    background-color: var(--danger-color); /* Slightly darker danger color */
 }
 
 .no-results {
     text-align: center;
     padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .no-results i {
@@ -1373,13 +1699,13 @@ button:hover, .button:hover {
 
 .no-results h2 {
     font-size: 1.5em;
-    color: var(--text-color);
+    color: var(--text-dark);
     margin-bottom: 10px;
 }
 
 .no-results p {
     color: var(--text-light);
-    margin-bottom: 20px;
+    padding-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -1400,13 +1726,12 @@ button:hover, .button:hover {
 /* Post Car Page Styles */
 .post-car-header {
     background-color: var(--bg-light);
-    padding: 80px 0 30px;
-    margin-bottom: 30px;
+    padding: 80px 0 0 0;
 }
 
 .post-car-header h1 {
     font-size: 2.5em;
-    color: var(--text-color);
+    color: var(--text-dark);
     margin-bottom: 10px;
 }
 
@@ -1419,7 +1744,7 @@ button:hover, .button:hover {
     background: var(--white);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     margin-bottom: 50px;
 }
 
@@ -1437,7 +1762,7 @@ button:hover, .button:hover {
 .post-car-form label {
     display: block;
     margin-bottom: 8px;
-    color: var(--text-color);
+    color: var(--text-dark);
     font-weight: 500;
 }
 
@@ -1473,7 +1798,7 @@ button:hover, .button:hover {
 }
 
 .submit-btn {
-    background-color: var(--primary-color);
+    background-color: var(--text-dark);
     color: var(--white);
     padding: 12px 30px;
     border: none;
@@ -1487,7 +1812,7 @@ button:hover, .button:hover {
 }
 
 .submit-btn:hover {
-    background-color: var(--secondary-color);
+    background-color: gray;
 }
 
 .submit-btn i {
@@ -1520,7 +1845,7 @@ button:hover, .button:hover {
     background: var(--white);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s;
 }
 
@@ -1565,11 +1890,13 @@ button:hover, .button:hover {
 .car-details {
     padding: 20px;
 }
-
+.car-details-container{
+    margin-top: 2rem;
+}
 .car-details h3 {
     font-size: 1.3em;
     margin-bottom: 10px;
-    color: var(--text-color);
+    color: var(--text-dark);
 }
 
 .car-info {
@@ -1583,21 +1910,23 @@ button:hover, .button:hover {
     align-items: center;
 }
 
-.car-info i {
+.car-meta i{
     width: 20px;
     margin-right: 10px;
-    color: var(--primary-color);
+    color: var(--text-dark);
 }
-
+.car-meta{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
 .car-actions {
     display: flex;
     gap: 10px;
     margin-top: 15px;
 }
 
-.btn-edit, .btn-delete {
-    flex: 1;
-    padding: 8px;
+.btn-edit {
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -1606,16 +1935,37 @@ button:hover, .button:hover {
     align-items: center;
     justify-content: center;
     gap: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s;/* Adjust as needed */
+    width: 15vw; /* Or set a fixed size if you really want it tiny */
+    min-width: unset;
+    flex: none; /* Prevent it from expanding */
+    text-decoration: none;
+    height: 40px;
+}
+.btn-delete {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background-color 0.3s;/* Adjust as needed */
+    width: 15vw; /* Or set a fixed size if you really want it tiny */
+    min-width: unset;
+    flex: none; /* Prevent it from expanding */
+    text-decoration: none;
+    height: 40px;
 }
 
 .btn-edit {
-    background-color: var(--primary-color);
+    background-color: gray;
     color: var(--white);
 }
 
 .btn-edit:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--text-light);
 }
 
 .btn-delete {
@@ -1636,7 +1986,7 @@ button:hover, .button:hover {
     background: var(--white);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     margin-bottom: 50px;
 }
 
@@ -1662,7 +2012,7 @@ button:hover, .button:hover {
 
 .btn-secondary {
     background-color: var(--bg-light);
-    color: var(--text-color);
+    color: var(--text-dark);
     padding: 8px 16px;
     border-radius: 5px;
     text-decoration: none;
@@ -1689,4 +2039,4 @@ button:hover, .button:hover {
         max-width: 400px;
         margin: 0 auto;
     }
-} 
+}

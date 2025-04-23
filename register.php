@@ -90,11 +90,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
             
             <div class="auth-links">
-                <p>Already have an account? <a href="login.php">Login</a></p>
+                <p>Already have an account? <a href="login.php" class="lak">Login</a></p>
                 <?php if ($type === 'user'): ?>
-                    <p>Want to list your cars? <a href="register.php?type=agency">Register as Agency</a></p>
+                    <p>Want to list your cars? <a href="register.php?type=agency" class="lak">Register as Agency</a></p>
                 <?php else: ?>
-                    <p>Want to rent cars? <a href="register.php?type=user">Register as User</a></p>
+                    <p>Want to rent cars? <a href="register.php?type=user" class="lak">Register as User</a></p>
                 <?php endif; ?>
             </div>
         </div>

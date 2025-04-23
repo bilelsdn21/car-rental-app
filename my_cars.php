@@ -71,7 +71,7 @@ try {
         <div class="dashboard-content">
             <div class="dashboard-header">
                 <h1>My Cars</h1>
-                <a href="post_car.php" class="btn-primary">
+                <a href="post_car.php" class="btn-add-car">
                     <i class="fas fa-plus"></i> Add New Car
                 </a>
             </div>
@@ -125,12 +125,12 @@ try {
                                     </p>
                                 </div>
                                 <div class="car-actions">
-                                    <a href="edit_car.php?id=<?php echo $car['id']; ?>" class="btn-secondary">
+                                    <a href="edit_car.php?id=<?php echo $car['id']; ?>" class="btn-edit">
                                         <i class="fas fa-edit"></i>
                                         Edit
                                     </a>
                                     <a href="delete_car.php?id=<?php echo $car['id']; ?>" 
-                                       class="btn-danger" 
+                                       class="btn-delete" 
                                        onclick="return confirm('Are you sure you want to delete this car?');">
                                         <i class="fas fa-trash"></i>
                                         Delete
@@ -144,134 +144,5 @@ try {
         </div>
     </div>
 
-    <style>
-    .cars-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        padding: 2rem;
-    }
-
-    .car-card {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-
-    .car-image {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-    }
-
-    .car-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .car-details {
-        padding: 1.5rem;
-    }
-
-    .car-details h3 {
-        margin: 0 0 1rem 0;
-        color: #333;
-    }
-
-    .car-info {
-        margin: 0.5rem 0;
-        color: #666;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .car-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .btn-secondary {
-        background: #f5f5f5;
-        color: #333;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: background-color 0.2s;
-    }
-
-    .btn-secondary:hover {
-        background: #e0e0e0;
-    }
-
-    .btn-danger {
-        background: #ef5350;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: background-color 0.2s;
-    }
-
-    .btn-danger:hover {
-        background: #e53935;
-    }
-
-    .no-results {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .no-results i {
-        font-size: 4rem;
-        color: #e0e0e0;
-        margin-bottom: 1rem;
-    }
-
-    .no-results h2 {
-        color: #333;
-        margin-bottom: 1rem;
-    }
-
-    .no-results p {
-        color: #666;
-    }
-
-    .success-message, .error-message {
-        padding: 1rem;
-        border-radius: 4px;
-        margin: 1rem 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .success-message {
-        background: #f0f9eb;
-        color: #2e7d32;
-    }
-
-    .error-message {
-        background: #fff3f3;
-        color: #c62828;
-    }
-
-    .success-message i, .error-message i {
-        font-size: 1.25rem;
-    }
-    </style>
 </body>
 </html>

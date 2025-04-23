@@ -64,9 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php include 'includes/navbar.php'; ?>
 
-    <div class="container">
-        <div class="login-container">
-            <h2>Welcome Back</h2>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Welcome Back</h1>
             
             <?php if (isset($error_message)): ?>
                 <div class="error-message">
@@ -75,25 +75,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <form action="login.php" method="POST" class="login-form">
+            <form action="login.php" method="POST" class="auth-form">
                 <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-sign-in-alt"></i> Log In
-                    </button>
-                </div>
+                <button type="submit" class="auth-btn">Login</button>
 
-                <div class="form-group">
-                    <p>Don't have an account? <a href="register.php">Sign up</a></p>
+                <div class="auth-links">
+                    <p>Don't have an account?</p>
+                    <div class="register-options">
+                        <a href="register.php?type=user" class="btn-out">Register as User</a>
+                        <a href="register.php?type=agency" class="btn-out">Register as Agency</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -101,75 +107,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include 'includes/footer.php'; ?>
 
-    <style>
-    .login-container {
-        max-width: 400px;
-        margin: 4rem auto;
-        padding: 2rem;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .login-container h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #333;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #666;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1rem;
-    }
-
-    .form-group button {
-        width: 100%;
-        padding: 0.8rem;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.3s;
-    }
-
-    .form-group button:hover {
-        background: #0056b3;
-    }
-
-    .error-message {
-        background: #fff3f3;
-        border: 1px solid #f8d7da;
-        border-radius: 5px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        color: #721c24;
-    }
-
-    .error-message i {
-        margin-right: 0.5rem;
-    }
-
-    @media (max-width: 768px) {
-        .login-container {
-            margin: 2rem auto;
-            padding: 1.5rem;
-        }
-    }
-    </style>
 </body>
 </html>

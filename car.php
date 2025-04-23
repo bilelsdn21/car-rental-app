@@ -147,7 +147,7 @@ try {
                                                placeholder="$0.00">
                                     </div>
 
-                                    <button type="submit" class="btn-primary">
+                                    <button type="submit" class="btn-book">
                                         <i class="fas fa-check"></i> Confirm Booking
                                     </button>
                                 </form>
@@ -441,14 +441,14 @@ try {
     }
 
     .meta-item i {
-        color: #3498db;
+        color: gray;
         font-size: 1.25rem;
     }
 
     .meta-item.price {
         font-size: 1.25rem;
         font-weight: 600;
-        color: #2ecc71;
+        color:#000000;
     }
 
     .car-description {
@@ -514,6 +514,8 @@ try {
     .btn-book {
         padding: 1rem;
         font-size: 1.125rem;
+        gap: 1rem;
+        width: 100%;
     }
 
     .login-prompt {

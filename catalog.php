@@ -180,7 +180,7 @@ try {
                     </div>
                 </div>
 
-                <button type="submit" name="search" class="btn-primary">
+                <button type="submit" name="search" class="filter-btn">
                     <i class="fas fa-search"></i> Search
                 </button>
                 </form>
@@ -225,7 +225,7 @@ try {
                                         <span><i class="fas fa-clock"></i> <?php echo $car['min_rental_days']; ?>-<?php echo $car['max_rental_days']; ?> days</span>
                                     </div>
                                 </div>
-                                <a href="car.php?id=<?php echo $car['id']; ?>" class="btn-primary">
+                                <a href="car.php?id=<?php echo $car['id']; ?>" class="view-details-btn">
                                     <i class="fas fa-info-circle"></i> View Details
                                 </a>
                             </div>
